@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}Coach Dashboard - FitZone Gym{% endblock %}
+
+{% block content %}
+<style>
+    .management-section { margin-top: 32px; }
+    .management-section > h2 { margin-bottom: 18px; font-family: 'Space Grotesk', sans-serif; }
+    .management-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+    .management-card { padding: 24px; background: var(--white); box-shadow: 0 12px 35px rgba(23,23,23,.08); }
+    .management-card h3 { margin: 0 0 10px; font: 500 22px 'Space Grotesk', sans-serif; }
+    .management-card p { color: var(--muted); line-height: 1.5; }
+    .management-card form p { margin: 10px 0; }
+    .management-card label { display: block; margin-bottom: 5px; color: var(--ink); font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+    .management-card input, .management-card select, .management-card textarea { width: 100%; padding: 9px 10px; border: 1px solid var(--line); color: var(--ink); background: var(--paper); font: inherit; }
+    .management-card textarea { resize: vertical; }
+    .management-card .dashboard-link { margin-top: 8px; }
+    .management-card .danger-link { margin-left: 8px; background: #8b2b1c; }
+    .management-card hr { margin: 22px 0; border: 0; border-top: 1px solid var(--line); }
+    .management-card ul { margin: 10px 0 0; padding-left: 18px; color: var(--muted); }
+    .management-muted { color: var(--muted); }
+    @media (max-width: 767px) { .management-grid { grid-template-columns: 1fr; } .management-card .danger-link { display: inline-block; margin: 8px 0 0; } }
+</style>
+
+<main class="dashboard">
+    <div class="dashboard-header"><div><p class="dashboard-label">Coach Area</p><h1>Coach Dashboard</h1><p>Welcome back, {{ user.first_name|default:user.username }}. Manage clients and plans.</p></div></div>
+
+    <div class="dashboard-grid">
+        <div class="dashboard-card"><h2>My Clients</h2><p>{{ client_count }} registered clients are using FitZone.</p></div>
+        <div class="dashboard-card"><h2>Macro Calculator</h2><p>Review targets for your own training plan.</p><a href="{% url 'calculator' 'macro' %}" class="dashboard-link">Open Calculator</a></div>
+        <div class="dashboard-card"><h2>Recent Results</h2>{% for calculation in recent_calculations %}<p>{{ calculation.get_calculator_type_display }}: {{ calculation.calories }} calories</p>{% empty %}<p>Your saved calculator results will appear here.</p>{% endfor %}</div>
+    </div>
+
+    <section class="management-section"><h2>Client Management</h2><div class="management-grid">{% for client in clients %}<article class="management-card"><h3>{{ client.user.get_full_name|default:client.user.username }}</h3><p>{{ client.user.email }}{% if client.phone %}<br>{{ client.phone }}{% endif %}</p><p>Diet plans: {{ client.diet_plans.count }}<br>Workout tasks: {{ client.workout_plans.count }}</p></article>{% empty %}<p class="management-muted">No registered clients yet.</p>{% endfor %}</div></section>
+    <section class="management-section"><h2>Subscriptions &amp; Payments</h2><div class="management-grid">{% for payment in payments %}<article class="management-card"><h3>{{ payment.user.get_full_name|default:payment.user.username }}</h3><p>{{ payment.plan.name }}<br>Amount: INR {{ payment.amount }}<br>Payment: {{ payment.get_status_display }}<br>Subscription: {% if payment.subscription %}{{ payment.subscription.get_status_display }}{% else %}-{% endif %}<br>Transaction: {{ payment.gateway_payment_id|default:payment.gateway_order_id }}<br>Start: {% if payment.subscription %}{{ payment.subscription.start_date|default:'-' }}{% else %}-{% endif %}<br>Expiry: {% if payment.subscription %}{{ payment.subscription.end_date|default:'-' }}{% else %}-{% endif %}<br>Payment date: {{ payment.updated_at|date:'Y-m-d H:i' }}</p></article>{% empty %}<p class="management-muted">No subscription payments yet.</p>{% endfor %}</div></section>
+    <section class="management-section"><h2>Diet Planner</h2><div class="management-grid"><article class="management-card"><h3>Create diet plan</h3><form method="post" action="{% url 'coach_diet_create' %}">{% csrf_token %}{{ diet_form.as_p }}<button class="dashboard-link" type="submit">Save diet plan</button></form></article>{% for plan, form in diet_items %}<article class="management-card"><h3>{{ plan.client.user.get_full_name|default:plan.client.user.username }}</h3><form method="post" action="{% url 'coach_diet_edit' plan.pk %}">{% csrf_token %}{{ form.as_p }}<button class="dashboard-link" type="submit">Update plan</button></form><form method="post" action="{% url 'coach_diet_delete' plan.pk %}">{% csrf_token %}<button class="dashboard-link danger-link" type="submit">Delete plan</button></form></article>{% empty %}<p class="management-muted">No diet plans created yet.</p>{% endfor %}</div></section>
+
+    <section class="management-section"><h2>Workout Planner</h2><div class="management-grid"><article class="management-card"><h3>Create workout plan</h3><form method="post" action="{% url 'coach_workout_create' %}">{% csrf_token %}{{ workout_form.as_p }}<button class="dashboard-link" type="submit">Save workout</button></form></article>{% for plan, form in workout_items %}<article class="management-card"><h3>{{ plan.client.user.get_full_name|default:plan.client.user.username }}: {{ plan.exercise }}</h3><form method="post" action="{% url 'coach_workout_edit' plan.pk %}">{% csrf_token %}{{ form.as_p }}<button class="dashboard-link" type="submit">Update workout</button></form><form method="post" action="{% url 'coach_workout_delete' plan.pk %}">{% csrf_token %}<button class="dashboard-link danger-link" type="submit">Delete workout</button></form></article>{% empty %}<p class="management-muted">No workout plans created yet.</p>{% endfor %}</div></section>
+
+    <section class="management-section"><h2>Complaints</h2><div class="management-grid">{% for complaint, form in complaint_items %}<article class="management-card"><h3>{{ complaint.full_name }} <span class="management-muted">/ {{ complaint.get_category_display }}</span></h3><p>{{ complaint.email }}<br>{{ complaint.description }}</p><form method="post" action="{% url 'coach_complaint_update' complaint.pk %}">{% csrf_token %}{{ form.as_p }}<button class="dashboard-link" type="submit">Update complaint</button></form></article>{% empty %}<p class="management-muted">No complaints submitted.</p>{% endfor %}</div></section>
+
+    <section class="management-section"><h2>Enquiries</h2><div class="management-grid">{% for enquiry, form in enquiry_items %}<article class="management-card"><h3>{{ enquiry.full_name }} <span class="management-muted">/ {{ enquiry.get_enquiry_type_display }}</span></h3><p>{{ enquiry.email }}<br>{{ enquiry.message }}</p><form method="post" action="{% url 'coach_enquiry_update' enquiry.pk %}">{% csrf_token %}{{ form.as_p }}<button class="dashboard-link" type="submit">Update enquiry</button></form></article>{% empty %}<p class="management-muted">No enquiries submitted.</p>{% endfor %}</div></section>
+
+    <section class="management-section"><h2>Client Progress</h2><div class="management-grid">{% for item in progress %}<article class="management-card"><h3>{{ item.client.user.get_full_name|default:item.client.user.username }}</h3><p>{{ item.workout.exercise }} on {{ item.workout.workout_date }}<br>Status: {{ item.get_status_display }}{% if item.completed_on %}<br>Completed: {{ item.completed_on }}{% endif %}</p>{% if item.note %}<p>Note: {{ item.note }}</p>{% endif %}</article>{% empty %}<p class="management-muted">No completed workout updates yet.</p>{% endfor %}</div></section>
+</main>
+{% endblock %}

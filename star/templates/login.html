@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}Log In - FitZone Gym{% endblock %}
+
+{% block content %}
+<section class="role-section auth-page">
+    <div class="role-box auth-box">
+        <p class="section-kicker">Welcome back</p>
+        <h1>Log in to FitZone</h1>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            {{ form.as_p }}
+            <button type="submit" class="primary-button">Log in</button>
+        </form>
+        <p>New to FitZone? <a class="arrow-link" href="{% url 'choose_role' %}">Join now <span>&rarr;</span></a></p>
+    </div>
+</section>
+{% endblock %}

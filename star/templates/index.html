@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}FitZone Gym{% endblock %}
+
+{% block content %}
+<main>
+    <section class="hero-section" id="top">
+        <div class="hero-content">
+            <p class="eyebrow">Train with purpose</p>
+            <h1>Build the body.<br><span>Live the life.</span></h1>
+            <p class="hero-copy">A focused training space for people who are ready to get stronger, move better, and feel unstoppable.</p>
+            <div class="hero-actions">
+                <a class="primary-button" href="{% url 'choose_role' %}">Start your journey <span>&rarr;</span></a>
+                <a class="text-link" href="#programs">Explore programs <span>&darr;</span></a>
+            </div>
+        </div>
+        <div class="hero-note"><strong>01</strong><span>Built for<br>real progress</span></div>
+    </section>
+
+    <section class="intro-section page-section">
+        <div class="section-kicker">Why FitZone</div>
+        <div class="intro-grid">
+            <h2>More than a gym.<br><em>Your best hour<br>of the day.</em></h2>
+            <div>
+                <p class="section-lead">No noise. No ego. Just a smarter way to train, supported by expert coaches and a community that shows up.</p>
+                <a class="arrow-link" href="{% url 'about' %}">Meet FitZone <span>&rarr;</span></a>
+            </div>
+        </div>
+        <div class="stat-row">
+            <div><strong>12<span>+</span></strong><small>Expert coaches</small></div>
+            <div><strong>40<span>+</span></strong><small>Weekly classes</small></div>
+            <div><strong>2k<span>+</span></strong><small>Members growing</small></div>
+            <div><strong>24<span>/7</span></strong><small>Access available</small></div>
+        </div>
+    </section>
+
+    <section class="programs-section page-section" id="programs">
+        <div class="section-heading-row">
+            <div><div class="section-kicker">Find your focus</div><h2>Train your way.</h2></div>
+            <a class="arrow-link" href="{% url 'services' %}">View all services <span>&rarr;</span></a>
+        </div>
+        <div class="program-grid">
+            <a class="program-card program-card--large" href="{% url 'services' %}">
+                <img src="https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?auto=format&fit=crop&w=1200&q=85" alt="Athlete lifting a barbell">
+                <div class="program-overlay"><span>01 / Strength</span><h3>Build power<br>that lasts.</h3></div>
+            </a>
+            <a class="program-card" href="{% url 'services' %}">
+                <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=900&q=85" alt="Modern gym equipment">
+                <div class="program-overlay"><span>02 / Performance</span><h3>Move with<br>intention.</h3></div>
+            </a>
+            <a class="program-card" href="{% url 'services' %}">
+                <img src="https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=900&q=85" alt="Woman stretching after training">
+                <div class="program-overlay"><span>03 / Recovery</span><h3>Feel good<br>in motion.</h3></div>
+            </a>
+        </div>
+    </section>
+
+    <section class="story-section page-section" data-reveal>
+        <div class="section-heading-row">
+            <div><div class="section-kicker">The FitZone mindset</div><h2>Show up.<br><em>Level up.</em></h2></div>
+            <p class="section-lead">Every session is a chance to become a little stronger, more focused, and more confident than yesterday.</p>
+        </div>
+        <div class="fitness-slider" data-slider aria-label="FitZone training highlights">
+            <div class="slider-track">
+                <div class="slider-slide is-active">
+                    <img src="https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?auto=format&fit=crop&w=1400&q=85" alt="Athlete doing a strength workout">
+                    <div class="slider-caption"><span>01 / Strength</span><h3>Earn your<br>strong.</h3></div>
+                </div>
+                <div class="slider-slide">
+                    <img src="https://images.unsplash.com/photo-1538805060514-97d9cc17730c?auto=format&fit=crop&w=1400&q=85" alt="Athlete training with a kettlebell">
+                    <div class="slider-caption"><span>02 / Endurance</span><h3>Keep your<br>momentum.</h3></div>
+                </div>
+                <div class="slider-slide">
+                    <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=1400&q=85" alt="Personal trainer guiding a workout">
+                    <div class="slider-caption"><span>03 / Coaching</span><h3>Train with<br>direction.</h3></div>
+                </div>
+            </div>
+            <div class="slider-controls" role="tablist" aria-label="Choose training highlight">
+                <button type="button" class="slider-dot is-active" data-slide-to="0" aria-label="Show strength highlight" aria-current="true"></button>
+                <button type="button" class="slider-dot" data-slide-to="1" aria-label="Show endurance highlight" aria-current="false"></button>
+                <button type="button" class="slider-dot" data-slide-to="2" aria-label="Show coaching highlight" aria-current="false"></button>
+            </div>
+        </div>
+    </section>
+
+    <section class="join-section">
+        <div><div class="section-kicker">Your next chapter starts here</div><h2>Ready to put in<br><em>the work?</em></h2></div>
+        <a class="primary-button primary-button--light" href="{% url 'subscription_plans' %}">Join the community <span>&rarr;</span></a>
+    </section>
+</main>
+
+{% endblock %}

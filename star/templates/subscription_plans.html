@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Membership Plans - FitZone Gym{% endblock %}
+{% block extra_head %}<link rel="stylesheet" href="{% static 'css/subscription.css' %}">{% endblock %}
+
+{% block content %}
+<main class="plans-page" data-create-url="{% url 'create_payment_order' %}" data-verify-url="{% url 'verify_payment' %}" data-failed-url="{% url 'payment_failed' %}">{% csrf_token %}
+    <header class="plans-header"><p class="dashboard-label">Membership</p><h1>Choose your pace.</h1><p>Simple plans for consistent training, built around the way you want to show up.</p></header>
+    <div class="payment-message" data-payment-message role="status" aria-live="polite"></div>
+    {% if current_subscription %}
+    <section class="current-subscription"><p class="dashboard-label">Your current plan</p><h2>{{ current_subscription.plan.name }}</h2><p>Status: <strong>{{ current_subscription.get_status_display }}</strong> &middot; Valid through {{ current_subscription.end_date|default:'-' }}</p></section>
+    {% endif %}
+    <section class="plan-grid" aria-label="Available membership plans">
+        {% for plan in plans %}<article class="plan-card{% if current_subscription.plan_id == plan.id and current_subscription.status == 'active' %} plan-card--current{% endif %}"><p class="plan-number">0{{ forloop.counter }}</p><h2>{{ plan.name }}</h2><p class="plan-price"><span>INR</span> {{ plan.price|floatformat:0 }}</p><p class="plan-duration">{{ plan.duration_days }} days</p><ul>{% for feature in plan.features %}<li>{{ feature }}</li>{% endfor %}</ul>{% if user.is_authenticated and user.member_profile.role == 'client' %}<button class="plan-button" type="button" data-plan-id="{{ plan.id }}">Choose plan <span>&rarr;</span></button>{% elif user.is_authenticated %}<span class="plan-note">Client accounts can subscribe.</span>{% else %}<a class="plan-button" href="{% url 'login' %}?next={% url 'subscription_plans' %}">Sign in to subscribe <span>&rarr;</span></a>{% endif %}</article>{% empty %}<p>No plans are currently available.</p>{% endfor %}
+    </section>
+    {% if user.is_authenticated %}<section class="payment-history"><div><p class="dashboard-label">Account history</p><h2>Payments</h2></div><div class="history-list">{% for payment in payment_history %}<div class="history-row"><span>{{ payment.plan.name }}<small>{{ payment.created_at|date:'Y-m-d H:i' }}</small></span><strong>INR {{ payment.amount }}<small>{{ payment.get_status_display }}{% if payment.gateway_payment_id %} &middot; {{ payment.gateway_payment_id }}{% endif %}</small></strong></div>{% empty %}<p>No payment history yet.</p>{% endfor %}</div></section>{% endif %}
+</main>
+{% endblock %}
+{% block extra_scripts %}<script src="https://checkout.razorpay.com/v1/checkout.js"></script><script src="{% static 'js/subscription.js' %}"></script>{% endblock %}

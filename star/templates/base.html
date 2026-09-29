@@ -1,0 +1,89 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>{% block title %}FitZone Gym{% endblock %}</title>
+
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/font-awesome.css' %}">
+    <link rel="stylesheet" href="{% static 'css/templatemo-training-studio.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {% block extra_head %}{% endblock %}
+</head>
+
+<body>
+
+<header class="header-area header-sticky">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="main-nav">
+
+                    <a href="{% url 'index' %}" class="logo">
+                        FIT<span>ZONE</span>
+                    </a>
+
+                    <ul class="nav">
+                        <li>
+                            <a href="{% url 'index' %}">Home</a>
+                        </li>
+
+                        <li>
+                            <a href="{% url 'about' %}">About</a>
+                        </li>
+
+                        <li>
+                            <a href="{% url 'services' %}">Services</a>
+                        </li>
+
+                        <li>
+                            <a href="{% url 'contact' %}">Contact</a>
+                        </li>
+
+                        {% if user.is_authenticated %}
+                            <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+                            <li class="main-button">
+                                <form method="POST" action="{% url 'logout' %}">
+                                    {% csrf_token %}
+                                    <button type="submit">Logout</button>
+                                </form>
+                            </li>
+                        {% else %}
+                            <li><a href="{% url 'login' %}">Login</a></li>
+                            <li class="main-button"><a href="{% url 'choose_role' %}">Join Now</a></li>
+                        {% endif %}
+                    </ul>
+
+                    <a class="menu-trigger" aria-label="Open navigation">
+                        <span></span><span></span><span></span>
+                    </a>
+
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+{% block content %}
+{% endblock %}
+
+<footer class="site-footer">
+    <div class="footer-inner">
+        <a href="{% url 'index' %}" class="logo">FIT<span>ZONE</span></a>
+        <p>Train smart. Live strong.</p>
+        <div class="footer-links"><a href="{% url 'about' %}">About</a><a href="{% url 'services' %}">Programs</a><a href="{% url 'contact' %}">Contact</a></div>
+    </div>
+    <div class="footer-bottom"><span>Copyright 2026 FitZone Gym</span><span>Images via Unsplash</span></div>
+</footer>
+
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/accordions.js' %}"></script>
+<script src="{% static 'js/custom.js' %}"></script>
+{% block extra_scripts %}{% endblock %}
+
+</body>
+</html>

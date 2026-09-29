@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Calorie Calculator - FitZone Gym{% endblock %}
+
+{% block content %}
+<section class="role-section">
+    <div class="role-box">
+        <p class="section-kicker">Nutrition tools</p>
+        <h1>Calorie Calculator</h1>
+        <p>Estimate the calories you need to support your activity level.</p>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="primary-button">Calculate calories</button>
+        </form>
+        {% if result %}
+            <div class="dashboard-card">
+                <h2>Your estimate</h2>
+                <p><strong>{{ result.calories }}</strong> calories per day</p>
+                <p>Based on your saved profile details and activity level.</p>
+            </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,8 @@
+Hi {{ full_name }},
+
+We have received your FitZone complaint about {{ category }}. Our team will review it and follow up with you using your preferred contact method.
+
+Thank you for helping us improve the member experience.
+
+Best regards,
+FitZone Gym Team

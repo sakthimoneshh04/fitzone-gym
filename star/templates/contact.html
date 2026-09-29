@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Contact - FitZone Gym{% endblock %}
+
+{% block content %}
+<style>
+    .contact-support { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 45px; }
+    .contact-support-card { padding: 28px; border: 1px solid var(--line); background: var(--white); }
+    .contact-support-card h3 { margin: 0 0 12px; font: 500 25px 'Space Grotesk', sans-serif; }
+    .contact-support-card p { min-height: 45px; color: var(--muted); line-height: 1.55; }
+    .contact-support-card .primary-button { margin-top: 12px; }
+    @media (max-width: 767px) { .contact-support { grid-template-columns: 1fr; } }
+</style>
+
+<section class="section">
+    <div class="container">
+        <h2>Contact <em>FitZone</em></h2>
+
+        <p>Phone: +91 98765 43210</p>
+        <p>Email: fitzone@gmail.com</p>
+        <p>Location: Chennai, Tamil Nadu</p>
+
+        <div class="contact-support">
+            <article class="contact-support-card">
+                <h3>Have a complaint?</h3>
+                <p>Tell us about an issue or report a problem. Our team will review it carefully.</p>
+                <a class="primary-button" href="{% url 'complaint' %}">Submit complaint <span>&rarr;</span></a>
+            </article>
+            <article class="contact-support-card">
+                <h3>Have an enquiry?</h3>
+                <p>Ask us about memberships, training, trainers, or any of our services.</p>
+                <a class="primary-button" href="{% url 'enquiry' %}">Send an enquiry <span>&rarr;</span></a>
+            </article>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}
+Services - FitZone Gym
+{% endblock %}
+
+{% block content %}
+<style>
+    .services-page { overflow: hidden; color: var(--ink); background: var(--paper); }
+    .services-page *, .services-page *::before, .services-page *::after { box-sizing: border-box; }
+    .services-page .services-wrap { width: min(100%, 1180px); margin: 0 auto; }
+    .services-page .services-kicker { margin: 0 0 20px; color: var(--orange); font-size: 11px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; }
+    .services-page .services-heading { margin: 0; font: 600 clamp(39px, 5vw, 68px)/.96 'Space Grotesk', sans-serif; letter-spacing: -.055em; }
+    .services-page .services-heading span { color: var(--orange); }
+    .services-page .services-hero { min-height: 560px; display: flex; align-items: flex-end; padding: 145px max(7vw, 24px) 82px; color: var(--white); background: linear-gradient(90deg, rgba(9,9,9,.88), rgba(9,9,9,.3)), url("{% static 'images/training-image-01.jpg' %}") center/cover; }
+    .services-page .services-hero-inner { width: min(100%, 1180px); margin: 0 auto; }
+    .services-page .services-hero h1 { max-width: 700px; margin: 0; font: 600 clamp(52px, 7vw, 96px)/.9 'Space Grotesk', sans-serif; letter-spacing: -.06em; }
+    .services-page .services-hero h1 span { color: var(--orange); }
+    .services-page .services-section { padding: 105px max(7vw, 24px); }
+    .services-page .services-section--white { background: var(--white); }
+    .services-page .services-section--dark { color: var(--white); background: var(--ink); }
+    .services-page .services-section-header { display: flex; align-items: end; justify-content: space-between; gap: 25px; margin-bottom: 42px; }
+    .services-page .service-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .services-page .service-card { min-height: 220px; padding: 26px; border: 1px solid var(--line); background: var(--paper); }
+    .services-page .service-icon { width: 43px; height: 43px; display: grid; place-items: center; color: var(--white); background: var(--orange); font: 700 12px 'Space Grotesk', sans-serif; }
+    .services-page .service-card h3 { margin: 42px 0 11px; font: 500 23px 'Space Grotesk', sans-serif; }
+    .services-page .service-card p, .services-page .goal-card p, .services-page .program-card p, .services-page .support-card p { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.55; }
+    .services-page .goal-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .services-page .goal-card { min-height: 185px; padding: 23px; border: 1px solid rgba(255,255,255,.23); background: rgba(255,255,255,.04); cursor: pointer; transition: border-color .2s ease, background .2s ease, transform .2s ease; }
+    .services-page .goal-card:hover, .services-page .goal-card.is-selected, .services-page .goal-card:focus-visible { border-color: var(--orange); background: rgba(255,90,31,.1); outline: none; transform: translateY(-3px); }
+    .services-page .goal-card h3 { margin: 0 0 16px; color: var(--white); font: 500 21px 'Space Grotesk', sans-serif; }
+    .services-page .goal-card p { color: rgba(255,255,255,.66); }
+    .services-page .goal-card strong { display: block; margin-bottom: 7px; color: var(--orange); font-size: 10px; letter-spacing: .13em; text-transform: uppercase; }
+    .services-page .goal-result { min-height: 27px; margin: 24px 0 0; color: rgba(255,255,255,.75); font-size: 13px; }
+    .services-page .program-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .services-page .program-card { padding: 28px; border-top: 3px solid var(--orange); background: var(--paper); }
+    .services-page .program-card small { color: var(--orange); font-size: 10px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+    .services-page .program-card h3 { margin: 32px 0 10px; font: 500 26px 'Space Grotesk', sans-serif; }
+    .services-page .personal-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 9%; align-items: center; }
+    .services-page .personal-image { width: 100%; height: 390px; display: block; object-fit: cover; }
+    .services-page .personal-copy { max-width: 500px; color: var(--muted); font-size: 16px; line-height: 1.7; }
+    .services-page .personal-list, .services-page .get-list { margin: 24px 0 0; padding: 0; list-style: none; }
+    .services-page .personal-list li, .services-page .get-list li { margin: 12px 0; color: var(--ink); font-size: 15px; }
+    .services-page .personal-list li::before, .services-page .get-list li::before { content: '\2713'; margin-right: 10px; color: var(--orange); font-weight: 700; }
+    .services-page .get-layout { display: grid; grid-template-columns: .9fr 1.1fr; gap: 10%; align-items: center; }
+    .services-page .get-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin: 0; }
+    .services-page .process { background: var(--paper); }
+    .services-page .process-track { position: relative; display: grid; grid-template-columns: repeat(5, 1fr); margin-top: 66px; }
+    .services-page .process-track::before { content: ''; position: absolute; top: 22px; right: 9%; left: 9%; border-top: 1px solid var(--line); }
+    .services-page .process-step { position: relative; z-index: 1; padding-right: 20px; }
+    .services-page .process-number { width: 45px; height: 45px; display: grid; place-items: center; margin-bottom: 23px; color: var(--white); background: var(--orange); font: 700 12px 'Space Grotesk', sans-serif; }
+    .services-page .process-step h3 { margin: 0 0 9px; font: 500 20px 'Space Grotesk', sans-serif; }
+    .services-page .process-step p { max-width: 145px; margin: 0; color: var(--muted); font-size: 14px; line-height: 1.5; }
+    .services-page .support-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .services-page .support-card { padding: 32px; border: 1px solid var(--line); background: var(--white); }
+    .services-page .support-card h3 { margin: 0 0 12px; font: 500 26px 'Space Grotesk', sans-serif; }
+    .services-page .support-card .primary-button { margin-top: 25px; }
+    @media (max-width: 900px) {
+        .services-page .service-grid { grid-template-columns: repeat(2, 1fr); }
+        .services-page .goal-grid { grid-template-columns: repeat(2, 1fr); }
+        .services-page .process-step { padding-right: 8px; }
+    }
+    @media (max-width: 767px) {
+        .services-page .services-hero { min-height: 510px; padding: 125px 24px 62px; }
+        .services-page .services-section { padding: 76px 24px; }
+        .services-page .services-section-header { align-items: flex-start; flex-direction: column; }
+        .services-page .service-grid, .services-page .goal-grid, .services-page .program-grid, .services-page .support-grid { grid-template-columns: 1fr; }
+        .services-page .personal-layout, .services-page .get-layout { grid-template-columns: 1fr; gap: 38px; }
+        .services-page .personal-image { height: 300px; }
+        .services-page .get-list { grid-template-columns: 1fr; }
+        .services-page .process-track { grid-template-columns: 1fr; gap: 25px; margin-top: 42px; }
+        .services-page .process-track::before { top: 22px; bottom: 22px; left: 22px; right: auto; border-top: 0; border-left: 1px solid var(--line); }
+        .services-page .process-step { display: grid; grid-template-columns: 45px minmax(0, 1fr); column-gap: 18px; padding: 0; }
+        .services-page .process-number { grid-row: span 2; margin: 0; }
+        .services-page .process-step h3 { align-self: end; }
+        .services-page .process-step p { max-width: none; }
+    }
+</style>
+
+<main class="services-page">
+    <section class="services-hero"><div class="services-hero-inner"><p class="services-kicker">Our services</p><h1>Everything you need<br><span>to get stronger.</span></h1></div></section>
+
+    <section class="services-section"><div class="services-wrap"><div class="services-section-header"><div><p class="services-kicker">Train with purpose</p><h2 class="services-heading">Our fitness <span>services.</span></h2></div></div><div class="service-grid">
+        <article class="service-card"><span class="service-icon">01</span><h3>Strength Training</h3><p>Build strength and muscle with structured resistance training.</p></article>
+        <article class="service-card"><span class="service-icon">02</span><h3>Weight Management</h3><p>Goal-oriented training to support healthy weight management.</p></article>
+        <article class="service-card"><span class="service-icon">03</span><h3>Cardio Training</h3><p>Improve endurance, stamina and cardiovascular fitness.</p></article>
+        <article class="service-card"><span class="service-icon">04</span><h3>Functional Training</h3><p>Improve movement, balance, flexibility and everyday strength.</p></article>
+        <article class="service-card"><span class="service-icon">05</span><h3>Flexibility &amp; Mobility</h3><p>Improve mobility, flexibility and movement quality.</p></article>
+        <article class="service-card"><span class="service-icon">06</span><h3>Personal Training</h3><p>One-to-one guidance with structured workouts and trainer support.</p></article>
+    </div></div></section>
+
+    <section class="services-section services-section--dark"><div class="services-wrap"><p class="services-kicker">Find your focus</p><h2 class="services-heading">Choose your fitness <span>goal.</span></h2><div class="goal-grid" style="margin-top: 42px;"><button class="goal-card is-selected" type="button" data-goal="muscle"><h3>Build Muscle</h3><strong>Recommended</strong><p>Strength Training<br>Personal Training</p></button><button class="goal-card" type="button" data-goal="weight"><h3>Lose Weight</h3><strong>Recommended</strong><p>Cardio Training<br>Weight Management</p></button><button class="goal-card" type="button" data-goal="strength"><h3>Build Strength</h3><strong>Recommended</strong><p>Strength Training<br>Functional Training</p></button><button class="goal-card" type="button" data-goal="fitness"><h3>Improve Fitness</h3><strong>Recommended</strong><p>Cardio Training<br>Flexibility &amp; Mobility</p></button></div><p class="goal-result" data-goal-result aria-live="polite">Build Muscle: Strength Training and Personal Training are a strong place to start.</p></div></section>
+
+    <section class="services-section services-section--white"><div class="services-wrap"><p class="services-kicker">Progress with intention</p><h2 class="services-heading">Training <span>programs.</span></h2><div class="program-grid" style="margin-top: 42px;"><article class="program-card"><small>01 / Foundation</small><h3>Beginner</h3><p>Foundation and basic fitness.</p></article><article class="program-card"><small>02 / Progress</small><h3>Intermediate</h3><p>Strength and progressive training.</p></article><article class="program-card"><small>03 / Performance</small><h3>Advanced</h3><p>Performance-focused training.</p></article></div></div></section>
+
+    <section class="services-section"><div class="services-wrap personal-layout"><img class="personal-image" src="{% static 'images/dumbell.jpg' %}" alt="Strength training equipment at FitZone"><div class="personal-copy"><p class="services-kicker">Dedicated coaching</p><h2 class="services-heading">Personal <span>training.</span></h2><p>Get focused support built around your goals, experience, and schedule. Every session gives you a clear plan and a coach in your corner.</p><ul class="personal-list"><li>One-to-one guidance</li><li>Customized workouts</li><li>Trainer support</li><li>Progress monitoring</li></ul></div></div></section>
+
+    <section class="services-section services-section--white"><div class="services-wrap get-layout"><div><p class="services-kicker">Member support</p><h2 class="services-heading">What you <span>get.</span></h2></div><ul class="get-list"><li>Structured Workout Plan</li><li>Progress Tracking</li><li>Trainer Support</li><li>Fitness Guidance</li><li>Goal-Based Training</li></ul></div></section>
+
+    <section class="services-section process"><div class="services-wrap"><p class="services-kicker">The FitZone method</p><h2 class="services-heading">How our training <span>works.</span></h2><div class="process-track"><div class="process-step"><div class="process-number">01</div><h3>Assess</h3><p>Understand your goal.</p></div><div class="process-step"><div class="process-number">02</div><h3>Plan</h3><p>Create the right training approach.</p></div><div class="process-step"><div class="process-number">03</div><h3>Train</h3><p>Follow your workout program.</p></div><div class="process-step"><div class="process-number">04</div><h3>Track</h3><p>Monitor your progress.</p></div><div class="process-step"><div class="process-number">05</div><h3>Improve</h3><p>Keep progressing.</p></div></div></div></section>
+
+</main>
+
+<script>
+    (function () {
+        var goalText = {
+            muscle: 'Build Muscle: Strength Training and Personal Training are a strong place to start.',
+            weight: 'Lose Weight: Cardio Training and Weight Management can help you build momentum.',
+            strength: 'Build Strength: Strength Training and Functional Training work well together.',
+            fitness: 'Improve Fitness: Cardio Training and Flexibility & Mobility support balanced progress.'
+        };
+        document.querySelectorAll('.services-page [data-goal]').forEach(function (button) {
+            button.addEventListener('click', function () {
+                document.querySelectorAll('.services-page [data-goal]').forEach(function (item) { item.classList.remove('is-selected'); });
+                button.classList.add('is-selected');
+                document.querySelector('[data-goal-result]').textContent = goalText[button.getAttribute('data-goal')];
+            });
+        });
+    }());
+</script>
+
+{% endblock %}

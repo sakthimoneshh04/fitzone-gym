@@ -1,0 +1,15 @@
+Hi {{ user_name }},
+
+Your FitZone payment was successful.
+
+Plan: {{ plan_name }}
+Amount: {{ amount }}
+Status: {{ status }}
+Order reference: {{ order_reference }}
+Payment method: {{ payment_method }}
+Date: {{ date }}
+
+Your membership is now active and ready to use.
+
+Best regards,
+FitZone Gym Team

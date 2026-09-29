@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Client Dashboard - FitZone Gym{% endblock %}
+
+{% block content %}
+<style>
+    .client-section { margin-top: 32px; }
+    .client-section > h2 { margin-bottom: 18px; font-family: 'Space Grotesk', sans-serif; }
+    .client-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+    .client-card { padding: 24px; background: var(--white); box-shadow: 0 12px 35px rgba(23,23,23,.08); }
+    .client-card h3 { margin: 0 0 10px; font: 500 22px 'Space Grotesk', sans-serif; }
+    .client-card p { color: var(--muted); line-height: 1.55; }
+    .client-card label { display: block; margin: 10px 0 5px; color: var(--ink); font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+    .client-card select, .client-card input, .client-card textarea { width: 100%; padding: 9px 10px; border: 1px solid var(--line); color: var(--ink); background: var(--paper); font: inherit; }
+    .client-card textarea { resize: vertical; }
+    .client-card .dashboard-link { margin-top: 10px; }
+    .client-muted { color: var(--muted); }
+    @media (max-width: 767px) { .client-grid { grid-template-columns: 1fr; } }
+</style>
+
+<main class="dashboard">
+    <div class="dashboard-header"><div><p class="dashboard-label">Client Area</p><h1>Client Dashboard</h1><p>Welcome back, {{ user.first_name|default:user.username }}. Track your fitness progress.</p></div></div>
+
+    <div class="dashboard-grid">
+        <div class="dashboard-card"><h2>Macro Calculator</h2><p>Calculate and save your daily calorie and macro targets.</p><a href="{% url 'calculator' 'macro' %}" class="dashboard-link">Calculate Macros</a></div>
+        <div class="dashboard-card"><h2>Calorie Calculator</h2><p>Estimate your daily calorie requirements.</p><a href="{% url 'calculator' 'calorie' %}" class="dashboard-link">Calculate Calories</a></div>
+        <div class="dashboard-card"><h2>Saved Results</h2>{% for calculation in recent_calculations %}<p>{{ calculation.get_calculator_type_display }}: {{ calculation.calories }} calories</p>{% empty %}<p>Your saved calculator results will appear here.</p>{% endfor %}</div>
+    </div>
+
+    <section class="client-section"><h2>My Diet Plan</h2><div class="client-grid">{% for plan in diet_plans %}<article class="client-card"><h3>{{ plan.goal }}</h3><p>{{ plan.start_date }} to {{ plan.end_date }}<br><strong>Breakfast:</strong> {{ plan.breakfast }}<br><strong>Lunch:</strong> {{ plan.lunch }}<br><strong>Dinner:</strong> {{ plan.dinner }}<br><strong>Snacks:</strong> {{ plan.snacks|default:'None' }}<br><strong>Water:</strong> {{ plan.water_intake }}</p>{% if plan.instructions %}<p><strong>Instructions:</strong> {{ plan.instructions }}</p>{% endif %}</article>{% empty %}<p class="client-muted">No diet plan has been assigned yet.</p>{% endfor %}</div></section>
+    <section class="client-section"><h2>My Workout Plan &amp; Progress</h2><div class="client-grid">{% for item, form in workout_items %}<article class="client-card"><h3>{{ item.workout.exercise }}</h3><p><strong>Goal:</strong> {{ item.workout.goal }}<br><strong>Date:</strong> {{ item.workout.workout_date }}<br><strong>Sets:</strong> {{ item.workout.sets }}<br><strong>Reps:</strong> {{ item.workout.reps }}{% if item.workout.duration %}<br><strong>Duration:</strong> {{ item.workout.duration }}{% endif %}{% if item.workout.rest_time %}<br><strong>Rest:</strong> {{ item.workout.rest_time }}{% endif %}</p>{% if item.workout.instructions %}<p>{{ item.workout.instructions }}</p>{% endif %}<form method="post">{% csrf_token %}<input type="hidden" name="completion_id" value="{{ item.pk }}">{{ form.as_p }}<button class="dashboard-link" type="submit">Save progress</button></form></article>{% empty %}<p class="client-muted">No workout tasks have been assigned yet.</p>{% endfor %}</div></section>
+</main>
+{% endblock %}

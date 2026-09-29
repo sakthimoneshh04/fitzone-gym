@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}
+About - FitZone Gym
+{% endblock %}
+
+{% block content %}
+<style>
+    .about-page { overflow: hidden; color: var(--ink); background: var(--paper); }
+    .about-page *, .about-page *::before, .about-page *::after { box-sizing: border-box; }
+    .about-page .about-wrap { width: min(100%, 1180px); margin: 0 auto; }
+    .about-page .about-kicker { margin: 0 0 20px; color: var(--orange); font-size: 11px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; }
+    .about-page .about-heading { margin: 0; font: 600 clamp(40px, 5vw, 68px)/.96 'Space Grotesk', sans-serif; letter-spacing: -.055em; }
+    .about-page .about-heading em, .about-page .about-heading span { color: var(--orange); font-style: normal; }
+    .about-page .about-hero { min-height: 590px; display: flex; align-items: flex-end; padding: 150px max(7vw, 24px) 85px; color: var(--white); background: linear-gradient(90deg, rgba(9,9,9,.87), rgba(9,9,9,.28)), url("{% static 'images/training-image-01.jpg' %}") center/cover; }
+    .about-page .about-hero-inner { width: min(100%, 1180px); margin: 0 auto; }
+    .about-page .about-hero h1 { max-width: 720px; margin: 0; font: 600 clamp(52px, 7vw, 98px)/.9 'Space Grotesk', sans-serif; letter-spacing: -.06em; }
+    .about-page .about-hero h1 span { color: var(--orange); }
+    .about-page .about-section { padding: 108px max(7vw, 24px); }
+    .about-page .about-section--white { background: var(--white); }
+    .about-page .about-section--dark { color: var(--white); background: var(--ink); }
+    .about-page .about-intro { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 9%; align-items: center; }
+    .about-page .about-image { width: 100%; height: 420px; display: block; object-fit: cover; }
+    .about-page .about-copy { max-width: 480px; color: var(--muted); font-size: 16px; line-height: 1.7; }
+    .about-page .about-copy p { margin: 0 0 25px; }
+    .about-page .about-copy strong { color: var(--ink); }
+    .about-page .mission-layout { display: grid; grid-template-columns: .8fr 1.2fr; gap: 10%; align-items: center; }
+    .about-page .mission-copy { max-width: 550px; color: rgba(255,255,255,.72); font-size: 18px; line-height: 1.7; }
+    .about-page .mission-points { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin: 0; padding: 0; list-style: none; }
+    .about-page .mission-points li { padding: 18px 0; border-top: 1px solid rgba(255,255,255,.24); color: var(--white); font: 500 22px 'Space Grotesk', sans-serif; }
+    .about-page .mission-points li::before { content: '/'; margin-right: 14px; color: var(--orange); }
+    .about-page .section-intro { max-width: 580px; margin-bottom: 42px; }
+    .about-page .feature-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    .about-page .feature-card { min-height: 245px; padding: 26px; border: 1px solid var(--line); background: var(--paper); }
+    .about-page .feature-icon { width: 43px; height: 43px; display: grid; place-items: center; color: var(--white); background: var(--orange); font: 700 12px 'Space Grotesk', sans-serif; }
+    .about-page .feature-card h3 { margin: 42px 0 12px; font: 500 21px 'Space Grotesk', sans-serif; }
+    .about-page .feature-card p { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.55; }
+    .about-page .journey { background: var(--paper); }
+    .about-page .journey-track { position: relative; display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; margin-top: 68px; }
+    .about-page .journey-track::before { content: ''; position: absolute; top: 22px; right: 9%; left: 9%; border-top: 1px solid var(--line); }
+    .about-page .journey-step { position: relative; z-index: 1; padding-right: 24px; }
+    .about-page .journey-number { width: 45px; height: 45px; display: grid; place-items: center; margin-bottom: 24px; color: var(--white); background: var(--orange); font: 700 12px 'Space Grotesk', sans-serif; }
+    .about-page .journey-step h3 { margin: 0 0 10px; font: 500 20px 'Space Grotesk', sans-serif; }
+    .about-page .journey-step p { max-width: 155px; margin: 0; color: var(--muted); font-size: 14px; line-height: 1.5; }
+    .about-page .trainer-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .about-page .trainer-card { background: var(--paper); }
+    .about-page .trainer-card img { width: 100%; height: 300px; display: block; object-fit: cover; }
+    .about-page .trainer-info { padding: 21px 22px 24px; }
+    .about-page .trainer-info h3 { margin: 0 0 8px; font: 500 24px 'Space Grotesk', sans-serif; }
+    .about-page .trainer-info p { margin: 0; color: var(--orange); font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+    .about-page .choose-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 10%; align-items: center; }
+    .about-page .choose-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 17px; margin: 0; padding: 0; list-style: none; }
+    .about-page .choose-list li { color: var(--muted); font-size: 15px; }
+    .about-page .choose-list li::before { content: '\2713'; margin-right: 10px; color: var(--orange); font-weight: 700; }
+    .about-page .about-cta { display: flex; align-items: center; justify-content: space-between; gap: 30px; }
+    .about-page .about-cta p { margin: 10px 0 0; color: rgba(255,255,255,.7); }
+    .about-page .about-cta .primary-button { flex-shrink: 0; }
+    @media (max-width: 900px) {
+        .about-page .feature-grid { grid-template-columns: repeat(2, 1fr); }
+        .about-page .journey-track { gap: 18px; }
+        .about-page .journey-step { padding-right: 8px; }
+    }
+    @media (max-width: 767px) {
+        .about-page .about-hero { min-height: 520px; padding: 125px 24px 62px; }
+        .about-page .about-section { padding: 76px 24px; }
+        .about-page .about-intro, .about-page .mission-layout, .about-page .choose-layout { grid-template-columns: 1fr; gap: 38px; }
+        .about-page .about-image { height: 300px; }
+        .about-page .mission-points, .about-page .choose-list { grid-template-columns: 1fr; }
+        .about-page .feature-grid, .about-page .trainer-grid { grid-template-columns: 1fr; }
+        .about-page .feature-card { min-height: auto; }
+        .about-page .journey-track { grid-template-columns: 1fr; gap: 25px; margin-top: 42px; }
+        .about-page .journey-track::before { top: 22px; bottom: 22px; left: 22px; right: auto; border-top: 0; border-left: 1px solid var(--line); }
+        .about-page .journey-step { display: grid; grid-template-columns: 45px minmax(0, 1fr); column-gap: 18px; padding: 0; }
+        .about-page .journey-number { grid-row: span 2; margin: 0; }
+        .about-page .journey-step h3 { align-self: end; }
+        .about-page .journey-step p { max-width: none; }
+        .about-page .about-cta { align-items: flex-start; flex-direction: column; }
+    }
+</style>
+
+<main class="about-page">
+    <section class="about-hero">
+        <div class="about-hero-inner">
+            <p class="about-kicker">About FitZone</p>
+            <h1>More than a gym.<br><span>It's a lifestyle.</span></h1>
+        </div>
+    </section>
+
+    <section class="about-section">
+        <div class="about-wrap about-intro">
+            <img class="about-image" src="{% static 'images/training-image-01.jpg' %}" alt="Member training at FitZone">
+            <div class="about-copy">
+                <p class="about-kicker">Who we are</p>
+                <h2 class="about-heading">Built for <span>real progress.</span></h2>
+                <p>FitZone is a focused gym for people ready to get stronger, move better, and feel more confident. We provide expert coaching, quality equipment, and practical programs that help members make every session count.</p>
+                <p><strong>Train with purpose. Live with confidence.</strong></p>
+            </div>
+        </div>
+    </section>
+
+    <section class="about-section about-section--dark">
+        <div class="about-wrap mission-layout">
+            <div><p class="about-kicker">Our mission</p><h2 class="about-heading">Stronger<br><span>every day.</span></h2></div>
+            <div><p class="mission-copy">Our mission is to help members build strength, confidence, and consistency through focused training and lasting healthy habits.</p><ul class="mission-points"><li>Strength</li><li>Confidence</li><li>Consistency</li><li>Healthy lifestyle</li></ul></div>
+        </div>
+    </section>
+
+    <section class="about-section about-section--white">
+        <div class="about-wrap">
+            <div class="section-intro"><p class="about-kicker">The FitZone difference</p><h2 class="about-heading">What makes us <span>different.</span></h2></div>
+            <div class="feature-grid">
+                <article class="feature-card"><span class="feature-icon">01</span><h3>Modern Equipment</h3><p>Professional and well-maintained workout equipment.</p></article>
+                <article class="feature-card"><span class="feature-icon">02</span><h3>Expert Trainers</h3><p>Guidance and support from experienced trainers.</p></article>
+                <article class="feature-card"><span class="feature-icon">03</span><h3>Personal Tracking</h3><p>Track fitness progress and workout improvements.</p></article>
+                <article class="feature-card"><span class="feature-icon">04</span><h3>Supportive Environment</h3><p>A motivating environment for consistent training.</p></article>
+            </div>
+        </div>
+    </section>
+
+    <section class="about-section journey">
+        <div class="about-wrap">
+            <p class="about-kicker">The process</p><h2 class="about-heading">Your fitness <span>journey.</span></h2>
+            <div class="journey-track">
+                <div class="journey-step"><div class="journey-number">01</div><h3>Join</h3><p>Start your FitZone journey.</p></div>
+                <div class="journey-step"><div class="journey-number">02</div><h3>Assess</h3><p>Understand your fitness level and goals.</p></div>
+                <div class="journey-step"><div class="journey-number">03</div><h3>Train</h3><p>Follow a structured workout routine.</p></div>
+                <div class="journey-step"><div class="journey-number">04</div><h3>Track</h3><p>Monitor your progress and improvements.</p></div>
+                <div class="journey-step"><div class="journey-number">05</div><h3>Achieve</h3><p>Work towards your fitness goals.</p></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="about-section about-section--white">
+        <div class="about-wrap">
+            <p class="about-kicker">Meet the team</p><h2 class="about-heading">Our <span>trainers.</span></h2>
+            <div class="trainer-grid">
+                <article class="trainer-card"><img src="{% static 'images/training-image-01.jpg' %}" alt="Strength trainer coaching a member"><div class="trainer-info"><h3>Alex Morgan</h3><p>Strength &amp; Conditioning</p></div></article>
+                <article class="trainer-card"><img src="{% static 'images/dumbell.jpg' %}" alt="Trainer preparing strength equipment"><div class="trainer-info"><h3>Maya Patel</h3><p>Weight Loss Training</p></div></article>
+                <article class="trainer-card"><img src="{% static 'images/training-image-01.jpg' %}" alt="Functional fitness trainer guiding a workout"><div class="trainer-info"><h3>Jordan Lee</h3><p>Functional Fitness</p></div></article>
+            </div>
+        </div>
+    </section>
+
+    <section class="about-section">
+        <div class="about-wrap choose-layout">
+            <div><p class="about-kicker">The member experience</p><h2 class="about-heading">Why members <span>choose us.</span></h2></div>
+            <ul class="choose-list"><li>Personalized Training</li><li>Flexible Workout Programs</li><li>Progress Tracking</li><li>Supportive Environment</li><li>Modern Equipment</li></ul>
+        </div>
+    </section>
+
+    <section class="about-section about-section--dark">
+        <div class="about-wrap about-cta">
+            <div><p class="about-kicker">Ready to start?</p><h2 class="about-heading">Your stronger<br><span>version starts today.</span></h2></div>
+            <a class="primary-button" href="{% url 'choose_role' %}">Get started <span>&rarr;</span></a>
+        </div>
+    </section>
+</main>
+
+{% endblock %}

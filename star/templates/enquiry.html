@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}Send an Enquiry - FitZone Gym{% endblock %}
+
+{% block content %}
+<style>
+    .feedback-page { min-height: calc(100vh - 90px); padding: 120px 24px 90px; background: var(--paper); }
+    .feedback-box { width: min(100%, 720px); margin: 0 auto; padding: 48px; background: var(--white); box-shadow: 0 12px 35px rgba(23,23,23,.08); }
+    .feedback-kicker { margin: 0 0 18px; color: var(--orange); font-size: 11px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; }
+    .feedback-box h1 { margin: 0; font: 600 clamp(38px, 5vw, 62px)/.96 'Space Grotesk', sans-serif; letter-spacing: -.055em; }
+    .feedback-box h1 span { color: var(--orange); }
+    .feedback-lead { max-width: 510px; margin: 18px 0 34px; color: var(--muted); line-height: 1.6; }
+    .feedback-form { display: grid; grid-template-columns: repeat(2, 1fr); gap: 19px 16px; }
+    .feedback-field { display: flex; flex-direction: column; gap: 8px; }
+    .feedback-field--full { grid-column: 1 / -1; }
+    .feedback-field label { color: var(--ink); font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+    .feedback-field input, .feedback-field select, .feedback-field textarea { width: 100%; padding: 13px 14px; border: 1px solid var(--line); border-radius: 0; color: var(--ink); background: var(--paper); font: inherit; }
+    .feedback-field textarea { resize: vertical; }
+    .feedback-field input:focus, .feedback-field select:focus, .feedback-field textarea:focus { border-color: var(--orange); outline: 2px solid rgba(255,90,31,.16); }
+    .feedback-errors { grid-column: 1 / -1; margin: 0; color: #c73518; font-size: 13px; }
+    .feedback-errors ul { margin: 0; padding-left: 18px; }
+    .feedback-success { margin: 0 0 26px; padding: 14px 16px; color: #246b37; background: #edf7ef; font-size: 14px; }
+    .feedback-submit { grid-column: 1 / -1; margin-top: 5px; }
+    @media (max-width: 600px) { .feedback-page { padding: 80px 20px 60px; } .feedback-box { padding: 30px 22px; } .feedback-form { grid-template-columns: 1fr; } .feedback-field--full, .feedback-errors, .feedback-submit { grid-column: auto; } }
+</style>
+
+<main class="feedback-page">
+    <section class="feedback-box">
+        <p class="feedback-kicker">Member support</p>
+        <h1>Send an <span>enquiry.</span></h1>
+        <p class="feedback-lead">Have a question about FitZone? Send us your enquiry and our team will get in touch with you.</p>
+        {% if submitted %}<p class="feedback-success" role="status">Thank you. Your enquiry has been submitted and our team will get in touch shortly.</p>{% endif %}
+        <form class="feedback-form" method="post">
+            {% csrf_token %}
+            {% if form.non_field_errors %}<div class="feedback-errors">{{ form.non_field_errors }}</div>{% endif %}
+            <div class="feedback-field"><label for="{{ form.full_name.id_for_label }}">Full Name</label>{{ form.full_name }}{{ form.full_name.errors }}</div>
+            <div class="feedback-field"><label for="{{ form.email.id_for_label }}">Email</label>{{ form.email }}{{ form.email.errors }}</div>
+            <div class="feedback-field"><label for="{{ form.phone.id_for_label }}">Phone Number</label>{{ form.phone }}{{ form.phone.errors }}</div>
+            <div class="feedback-field"><label for="{{ form.enquiry_type.id_for_label }}">Enquiry Type</label>{{ form.enquiry_type }}{{ form.enquiry_type.errors }}</div>
+            <div class="feedback-field feedback-field--full"><label for="{{ form.message.id_for_label }}">Message</label>{{ form.message }}{{ form.message.errors }}</div>
+            <div class="feedback-submit"><button class="primary-button" type="submit">Submit enquiry <span>&rarr;</span></button></div>
+        </form>
+    </section>
+</main>
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}Register - FitZone Gym{% endblock %}
+
+{% block content %}
+<section class="role-section auth-page">
+    <div class="role-box auth-box">
+        <p class="section-kicker">Join FitZone</p>
+        <h1>Create your account</h1>
+        <p>Start your training journey with a secure FitZone account.</p>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            <div class="register-fields">
+                <div class="register-field register-field--full">
+                    {{ form.username.label_tag }}
+                    {{ form.username }}
+                    {{ form.username.errors }}
+                </div>
+                <div class="register-field">
+                    {{ form.first_name.label_tag }}
+                    {{ form.first_name }}
+                    {{ form.first_name.errors }}
+                </div>
+                <div class="register-field">
+                    {{ form.last_name.label_tag }}
+                    {{ form.last_name }}
+                    {{ form.last_name.errors }}
+                </div>
+                <div class="register-field register-field--full">
+                    {{ form.email.label_tag }}
+                    {{ form.email }}
+                    {{ form.email.errors }}
+                </div>
+                <div class="register-field register-field--full">
+                    {{ form.phone.label_tag }}
+                    {{ form.phone }}
+                    {{ form.phone.errors }}
+                </div>
+                <div class="register-field register-field--full">
+                    {{ form.role.label_tag }}
+                    {{ form.role.errors }}
+                    {{ form.role }}
+                </div>
+                <div class="register-field register-field--full">
+                    {{ form.password1.label_tag }}
+                    {{ form.password1 }}
+                    {{ form.password1.errors }}
+                    {% if form.password1.help_text %}<div class="helptext">{{ form.password1.help_text|safe }}</div>{% endif %}
+                </div>
+                <div class="register-field register-field--full">
+                    {{ form.password2.label_tag }}
+                    {{ form.password2 }}
+                    {{ form.password2.errors }}
+                    {% if form.password2.help_text %}<div class="helptext">{{ form.password2.help_text|safe }}</div>{% endif %}
+                </div>
+            </div>
+            <button type="submit" class="primary-button">Create account</button>
+        </form>
+        <p>Already registered? <a class="arrow-link" href="{% url 'login' %}">Log in <span>&rarr;</span></a></p>
+    </div>
+</section>
+{% endblock %}

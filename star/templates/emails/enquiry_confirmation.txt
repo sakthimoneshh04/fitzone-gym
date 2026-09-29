@@ -1,0 +1,6 @@
+Hi {{ full_name }},
+
+Thank you for contacting FitZone Gym. We have received your {{ enquiry_type }} enquiry and our team will get back to you soon.
+
+Best regards,
+FitZone Gym Team

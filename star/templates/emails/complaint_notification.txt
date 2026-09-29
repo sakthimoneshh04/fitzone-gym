@@ -1,0 +1,10 @@
+New complaint received from FitZone website.
+
+Name: {{ full_name }}
+Email: {{ email }}
+Phone: {{ phone }}
+Category: {{ category }}
+Preferred contact: {{ preferred_contact }}
+
+Description:
+{{ description }}

@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}Choose Role - FitZone Gym{% endblock %}
+
+{% block content %}
+
+<section class="role-section">
+    <div class="role-box">
+        <h1>Welcome to FitZone</h1>
+        <p>Please select your role to continue.</p>
+
+        {% if error %}
+            <p class="error-message">{{ error }}</p>
+        {% endif %}
+
+        <form method="POST" action="{% url 'choose_role' %}">
+            {% csrf_token %}
+
+            <div class="role-options">
+                <label class="role-card">
+                    <input type="radio" name="role" value="coach" required>
+                    <span>
+                        <strong>Coach</strong>
+                        <small>Manage workouts and guide clients</small>
+                    </span>
+                </label>
+
+                <label class="role-card">
+                    <input type="radio" name="role" value="client">
+                    <span>
+                        <strong>Client</strong>
+                        <small>View workouts and track your progress</small>
+                    </span>
+                </label>
+            </div>
+
+            <button type="submit" class="primary-button">
+                Continue
+            </button>
+        </form>
+    </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,12 @@
+Hi {{ user_name }},
+
+Your coach, {{ coach_name }}, has assigned a new {{ plan_type }} plan to your FitZone account.
+
+Plan: {{ goal }}
+
+{{ plan_details }}
+
+You can view the full details on your dashboard.
+
+Best regards,
+FitZone Gym Team

@@ -1,0 +1,12 @@
+Hello {{ user_name }},
+
+Welcome to FitZone Gym! We are delighted to have you join our fitness community.
+
+Your account has been created successfully with the username {{ username }}.
+
+You can now log in to your dashboard, review your plans, track progress, and stay connected with your coach.
+
+We look forward to helping you reach your goals.
+
+Best regards,
+FitZone Gym Team

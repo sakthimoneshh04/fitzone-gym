@@ -1,0 +1,9 @@
+New enquiry received from FitZone website.
+
+Name: {{ full_name }}
+Email: {{ email }}
+Phone: {{ phone }}
+Type: {{ enquiry_type }}
+
+Message:
+{{ message }}

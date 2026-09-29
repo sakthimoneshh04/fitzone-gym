@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Macro Calculator - FitZone Gym{% endblock %}
+
+{% block content %}
+<section class="role-section">
+    <div class="role-box">
+        <p class="section-kicker">Nutrition tools</p>
+        <h1>Macro Calculator</h1>
+        <p>Estimate daily calories and macronutrients from your profile.</p>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="primary-button">Calculate macros</button>
+        </form>
+        {% if result %}
+            <div class="dashboard-card">
+                <h2>Your targets</h2>
+                <p><strong>{{ result.calories }}</strong> calories per day</p>
+                <p>Protein: {{ result.protein }} g | Carbs: {{ result.carbohydrate }} g | Fat: {{ result.fat }} g</p>
+            </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}
